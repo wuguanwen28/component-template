@@ -1,0 +1,56 @@
+一、模板创建说明
+  1. 当前工作区的文件夹与文件即为模板内容
+  2. 文件名与文件内容都支持占位符，创建时会被替换
+  3. 编辑模板时编辑器报错请忽略
+
+二、占位符
+  1. 创建组件时输入的组件名
+     [name] 全部为小写
+     [NAME] 全部为大写
+     [Name] 仅首字母为大写
+
+  2. [cssExt] css预处理器
+     取值范围：css | less | scss | styl | stylus
+     此值会根据当前项目 package.json 的预处理器的依赖来决定
+     sass会默认使用scss 如果要使用 sass 请在package.json中配置
+  
+  3. [jsExt] js语言： ts | js
+     如果该项目安装了Typescript则为ts, 否则为js
+
+  4. 如果识别不准确，可在当前项目的 package.json 中配置
+    {
+      /** otherOptions */
+      "templateOptions": {
+        "template": "default-react-ts",
+          "cssExt": "sass",
+          "jsExt": "ts"
+        }
+    }
+
+三、示例
+
+  1. 文件结构
+  模板文件夹                # 文件夹名即为模板名
+  ├─ [Name]                # 组件文件夹
+  │  ├─ [Name].tsx         # 核心文件
+  │  ├─ [Name].[cssExt]    # 样式文件
+
+  2. [Name].tsx文件
+  import React from 'react'
+  import "./[Name].[cssExt]"
+  type [Name]PropsType = { }
+  const [Name]: React.FC<[Name]PropsType> = (props) => {
+    return (
+      <div className="[name]-wrapper">[Name]</div>
+    )
+  }
+  export default [Name]
+
+  3. [Name].[cssExt]文件
+  .[name]-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+
+
+

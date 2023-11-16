@@ -1,48 +1,81 @@
 {
   "name": "component-template",
-  "displayName": "component-template",
+  "displayName": "Component Template",
   "description": "组件模板一键生成",
   "version": "0.0.1",
+  "icon": "icon.png",
+  "publisher": "wuguanwen",
+  "keywords": [
+    "模板",
+    "文件模板",
+    "组件模板",
+    "vue",
+    "react",
+    "vue组件",
+    "react组件",
+    "template",
+    "create",
+    "generate",
+    "创建文件"
+  ],
+  "repository": {
+    "url": "https://github.com/wuguanwen28/component-template.git"
+  },
   "engines": {
     "vscode": "^1.84.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "component-template.helloWorld",
-        "title": "Hello World"
+        "command": "component-template.create",
+        "title": "create-template: 创建组件模板"
+      },
+      {
+        "command": "component-template.generate",
+        "title": "新建组件"
       }
-    ]
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "explorerResourceIsFolder",
+          "command": "component-template.generate",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run package",
+    "vscode:prepublish": "yarn run package",
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.84.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/vscode": "^1.84.0",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
+    "@vscode/test-electron": "^2.3.4",
     "eslint": "^8.47.0",
     "glob": "^10.3.3",
     "mocha": "^10.2.0",
-    "typescript": "^5.1.6",
     "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
     "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
-    "@vscode/test-electron": "^2.3.4"
+    "webpack-cli": "^5.1.4"
   }
 }

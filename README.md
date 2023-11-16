@@ -1,71 +1,81 @@
-# component-template README
+# Welcome!!!
 
-This is the README for your extension "component-template". After writing up a brief description, we recommend including the following sections.
+### 一、说明
+  1. 可以通过创建的组件模板来新建组件或页面
+  2. 类似 `vscode` 的代码片段，不过这个能同时创建多个文件
+  
+### 二、创建组件
+  1. 与创建文件一样，右击选择 `新建组件` 
+  2. 输入组件名称
+  3. 选择组件模板
+  4. 可以在 `package.json` 中设置当前项目的默认模板
+  ```json
+    {
+      "componentTemplate": {
+        "template": "default-react-ts",
+      }
+    }
+  ```
 
-## Features
+### 三、创建组件模板
+  1. 按<kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>p</kbd>打开命令面板, 搜索 `create-template: 创建组件模板`
+  2. 输入模板名称
+  3. 会自动在`插件安装位置/.template` 文件夹中创建一个模板文件夹
+  4. 这个模板文件夹下面的所以子文件即为模板
+  5. 后续修改或删除该模板文件夹就可以修改或删除当前模板内容 
+  
+### 四、模板占位符
+1. **`模板或文件名里的占位符在创建时会被替换相应的值`**
+2. `[name]` 创建组件时输入的组件名
+    * `[name]`: 全部为小写
+    * `[NAME]`: 全部为大写
+    * `[Name]`: 仅首字母为大写
+  
+3. `[cssExt]` css扩展名
+    * `css` | `less` | `scss` | `styl` | `stylus`
+    * 会根据当前项目 `package.json` 的预处理器依赖来决定
+    * `sass` 的扩展名默认为 `scss`，如使用 `sass` 请在 `package.json` 中设置
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+4. `[jsExt]` 如果该项目安装了typescript则为`ts`, 否则为`js`
+   
+5. 如识别不准确，可在 `package.json` 中设置，如下
+  ``` json
+  {
+    "templateOptions": {
+      "template": "default-react-ts",
+      "cssExt": "sass",
+      "jsExt": "ts"
+    }
+  }
+  ```
 
-For example if there is an image subfolder under your extension project workspace:
+### 五、示例模板：React-Ts
+  ```text
+  模板文件夹                # 文件夹名即为模板名
+  ├─ [Name]                # 组件文件夹
+  │  ├─ [Name].tsx         # 核心文件
+  │  ├─ [Name].[cssExt]    # 样式文件
+  ```
+  ```ts
+  /* [Name].tsx */
+  import React from 'react'
+  import "./[Name].[cssExt]"
+  type [Name]PropsType = { }
+  const [Name]: React.FC<[Name]PropsType> = (props) => {
+    return (
+      <div className="[name]-wrapper">[Name]</div>
+    )
+  }
+  export default [Name]
+  ```
+  ```css
+  /* [Name].[cssExt] */
+  .[name]-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+  ```
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+### 六、其他
+  1. 后续看情况增加其他占位符如：时间、日期、用户名、邮箱等，用于生成文件注释
+  2. 组件名重复问题，当前只是判断输入的组件名，并没有结合模板内容的文件名来一起判断

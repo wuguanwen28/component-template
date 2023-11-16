@@ -1,26 +1,38 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from 'vscode'
+import { createTemplate } from './commands/create'
+import { generateComponent } from './commands/generate'
+import { getTemplateUri } from './utils'
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "component-template" is now active!');
+  globalThis.extensionPath = context.extensionPath
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('component-template.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from component-template!');
-	});
+  // 创建模板
+  let createCommand = vscode.commands.registerCommand(
+    'component-template.create',
+    createTemplate
+  )
 
-	context.subscriptions.push(disposable);
+  // 通过模板生成文件
+  let generateCommand = vscode.commands.registerCommand(
+    'component-template.generate',
+    generateComponent
+  )
+
+  // 打开模板文件夹后打开 模板说明文档
+  let workspace = vscode.workspace?.workspaceFolders || [];
+  workspace.forEach(async folder => {
+    let url = folder.uri.fsPath
+    if (url.includes(getTemplateUri().fsPath)) {
+      const directoryContents = await vscode.workspace.fs.readDirectory(folder.uri) || [];
+      if (directoryContents.length == 0) {
+        let fileUri = vscode.Uri.file(`${context.extensionPath}/模板创建说明.txt`)
+        vscode.window.showTextDocument(fileUri);
+      }
+    }
+  })
+  context.subscriptions.push(createCommand, generateCommand)
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
